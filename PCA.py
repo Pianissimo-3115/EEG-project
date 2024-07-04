@@ -6,7 +6,7 @@ def apply_pca_to_5_dimensions(data):
     x = np.array(data)
     x = x.T
     x = StandardScaler().fit_transform(x)
-    pca = PCA(n_components=6)
+    pca = PCA(n_components=5)
     principalComponents = pca.fit_transform(x)
     explained_variance_ratio = pca.explained_variance_ratio_
     return principalComponents, explained_variance_ratio
@@ -36,7 +36,7 @@ for i in range(1):
 
 pcadata=pcadata.T
 # print(pcadata[:][0],"\n\n\n\n\n", pcadata[:][1])
-fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(10,10))
+fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(10,10))
 arrays=[pcadata[1],pcadata[2],pcadata[3],pcadata[4]]
 for i, a in enumerate(arrays):
     row = i // 2
