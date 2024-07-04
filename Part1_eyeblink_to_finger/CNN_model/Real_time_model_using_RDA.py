@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from PIL import Image
 # arduino = serial.Serial(port='COM8', baudrate=9600, timeout=.1)
-model=keras.models.load_model("Part1_eyeblink_to_finger\\CNN_model\\newcnn.h5")
+model=keras.models.load_model("newcnn.h5")
 def plottoarr(x,y):
     plt.figure(figsize=(0.64, 0.48))
     plt.plot(x, y)

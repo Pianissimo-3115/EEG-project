@@ -12,7 +12,13 @@ www.brainproducts.com
 # needs socket and struct library
 from socket import *
 from struct import *
-
+import matplotlib.pyplot as plt
+zero=[]
+one=[]
+two=[]
+three=[]
+four=[]
+five=[]
 # Marker class for storing marker information
 class Marker:
     def __init__(self):
@@ -135,6 +141,7 @@ while not finish:
     rawdata = RecvData(con, msgsize - 24)
 
     # Perform action dependent on the message type
+    print(msgtype)
     if msgtype == 1:
         # Start message, extract eeg properties and display them
         (channelCount, samplingInterval, resolutions, channelNames) = GetProperties(rawdata)
@@ -146,8 +153,6 @@ while not finish:
         print("Sampling interval: " + str(samplingInterval))
         print("Resolutions: " + str(resolutions))
         print("Channel Names: " + str(channelNames))
-
-
     elif msgtype == 4:
         # Data message, extract data and markers
         (block, points, markerCount, data, markers) = GetData(rawdata, channelCount)
@@ -167,19 +172,26 @@ while not finish:
         data1s.extend(data)
 
         # If more than 1s of data is collected, calculate average power, print it and reset data buffer
-        if len(data1s) > channelCount * 10000000 / samplingInterval:
-            index = int(len(data1s) - channelCount * 10000000 / samplingInterval)
+        if len(data1s) > channelCount * 1000000 / samplingInterval:
+            index = int(len(data1s) - channelCount * 1000000 / samplingInterval)
             data1s = data1s[index:]
+            print(len(data1s)/channelCount)
+            zero.extend(data1s[0::6])
+            one.extend(data1s[1::6])            
+            two.extend(data1s[2::6])            
+            three.extend(data1s[3::6])            
+            four.extend(data1s[4::6])            
+            five.extend(data1s[5::6])            
 
-            avg = 0
-            for i in range(len(data1s)):
-                avg += data1s[i] * data1s[i] * resolutions[i % channelCount] * resolutions[i % channelCount]
+            # avg = 0
+            # for i in range(len(data1s)):
+            #     avg += data1s[i] * data1s[i] * resolutions[i % channelCount] * resolutions[i % channelCount]
 
             
             # Do not forget to respect the resolution !!!
             
-            avg /= len(data1s)
-            print("Average power: " + str(avg))
+            # avg /= len(data1s)
+            # print("Average power: " + str(avg))
 
             data1s = []
             
@@ -188,6 +200,8 @@ while not finish:
         # Stop message, terminate program
         print("Stop")
         finish = True
-
+import numpy as np
+arr=[zero,one,two,three,four,five]
+np.save("store.npy",np.array(arr))
 # Close tcpip connection
 con.close()
