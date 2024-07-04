@@ -159,7 +159,7 @@ while not finish:
         print("Channel Names: " + str(channelNames))
 
 
-    elif b-a>=120:
+    elif b-a>=2:
         print("this")
         print(msgtype,b-a)
         # Stop message, terminate program
@@ -187,6 +187,7 @@ while not finish:
         if len(data1s) > channelCount * 1000000 / samplingInterval:
             index = int(len(data1s) - channelCount * 1000000 / samplingInterval)
             data1s = data1s[index:]
+
             # print(len(store),channelCount)
             # print(store[0])
             # Do not forget to respect the resolution !!!
@@ -208,7 +209,7 @@ while not finish:
         print(b-a)
         finish = True
 b=a
-store=[zero,one,two,three,four,five]
-np.save("store.npy",np.array(store))
+store=[zero,one,two,three,four,five,[0 for i in range(len(zero))]]
+np.save("no4.npy",np.array(store))
 # Close tcpip connection
 con.close()
