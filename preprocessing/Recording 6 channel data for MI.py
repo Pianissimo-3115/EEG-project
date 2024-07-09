@@ -159,7 +159,7 @@ while not finish:
         print("Channel Names: " + str(channelNames))
 
 
-    elif b-a>=2:
+    elif b-a>=4:
         print("this")
         print(msgtype,b-a)
         # Stop message, terminate program
@@ -209,7 +209,7 @@ while not finish:
         print(b-a)
         finish = True
 b=a
-store=[zero,one,two,three,four,five,[0 for i in range(len(zero))]]
-np.save("no4.npy",np.array(store))
+store=[zero,one,two,three,four,five]
+np.save("Right dominant wrist movement(binary classification)\\testing\\transition.npy",np.array(store))
 # Close tcpip connection
 con.close()

@@ -14,13 +14,8 @@ from socket import *
 from struct import *
 import numpy as np
 import time
-import keyboard
-zero=[]
-one=[]
-two=[]
-three=[]
-four=[]
-five=[]
+store=[]
+
 # Marker class for storing marker information
 class Marker:
     def __init__(self):
@@ -135,7 +130,7 @@ a=time.perf_counter()
 b=a
 started=False
 while not finish:
-    # print(finish)
+
     # Get message header as raw array of chars
     rawhdr = RecvData(con, 24)
 
@@ -144,7 +139,7 @@ while not finish:
 
     # Get data part of message, which is of variable size
     rawdata = RecvData(con, msgsize - 24)
-    # print("msgtype:",msgtype)
+
     # Perform action dependent on the message type
     if msgtype == 1:
         # Start message, extract eeg properties and display them
@@ -159,15 +154,7 @@ while not finish:
         print("Channel Names: " + str(channelNames))
 
 
-    elif b-a>=4:
-        print("this")
-        print(msgtype,b-a)
-        # Stop message, terminate program
-        print("Stop")
-        print(msgtype)
-        print(b-a)
-        finish=True
-    elif msgtype==4:
+    elif msgtype == 4:
         # Data message, extract data and markers
         (block, points, markerCount, data, markers) = GetData(rawdata, channelCount)
         # Check for overflow
@@ -183,35 +170,27 @@ while not finish:
 
         # Put data at the end of actual buffer
         data1s.extend(data)
-        # If more than 1s of data is collected, calculate average power, print it and reset data buffer
-        if len(data1s) > channelCount * 1000000 / samplingInterval:
-            index = int(len(data1s) - channelCount * 1000000 / samplingInterval)
-            data1s = data1s[index:]
 
-            # print(len(store),channelCount)
-            # print(store[0])
+        # If more than 1s of data is collected, calculate average power, print it and reset data buffer
+        if len(data1s) > channelCount * 10000000 / samplingInterval:
+            index = int(len(data1s) - channelCount * 10000000 / samplingInterval)
+            data1s = data1s[index:]
+            if not started:
+                store=np.zeros((channelCount,len(data1s)/channelCount))
+                started=True
+            for i in range(len(data1s)):
+                store[i%channelCount][i//channelCount]=data1s[i]
+            
             # Do not forget to respect the resolution !!!
-            zero.extend(data1s[0::6])
-            one.extend(data1s[1::6])            
-            two.extend(data1s[2::6])            
-            three.extend(data1s[3::6])            
-            four.extend(data1s[4::6])            
-            five.extend(data1s[5::6]) 
             data1s=[]
             
         b=time.perf_counter()
-    elif msgtype == 3:
-        print("that")
-        print(msgtype,b-a)
+    elif msgtype == 3 or b-a>10:
         # Stop message, terminate program
         print("Stop")
-        print(msgtype)
-        print(b-a)
         finish = True
+    
 b=a
-ans=int(input("class: "))
-anss=[ans for i in range(len(zero))]
-store=[zero,one,two,three,four,five,anss]
-np.save("Right dominant wrist movement(binary classification)\\testing\\transition.npy",np.array(store))
+np.save("store.npy",store)
 # Close tcpip connection
 con.close()
