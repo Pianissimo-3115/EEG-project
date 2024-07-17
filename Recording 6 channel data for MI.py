@@ -13,8 +13,6 @@ www.brainproducts.com
 from socket import *
 from struct import *
 import numpy as np
-import time
-import keyboard
 zero=[]
 one=[]
 two=[]
@@ -131,8 +129,6 @@ data1s = []
 lastBlock = -1
 
 #### Main Loop ####
-a=time.perf_counter()
-b=a
 started=False
 while not finish:
     # print(finish)
@@ -159,13 +155,11 @@ while not finish:
         print("Channel Names: " + str(channelNames))
 
 
-    elif b-a>=2:
+    elif len(zero)==500:
         print("this")
-        print(msgtype,b-a)
         # Stop message, terminate program
         print("Stop")
         print(msgtype)
-        print(b-a)
         finish=True
     elif msgtype==4:
         # Data message, extract data and markers
@@ -199,19 +193,17 @@ while not finish:
             five.extend(data1s[5::6]) 
             data1s=[]
             
-        b=time.perf_counter()
     elif msgtype == 3:
         print("that")
-        print(msgtype,b-a)
         # Stop message, terminate program
         print("Stop")
         print(msgtype)
-        print(b-a)
         finish = True
-b=a
-ans=(input("class: "))
+# ans=(input("class: "))
+ans='b'
 # anss=[ans for i in range(len(zero))]
 store=[zero,one,two,three,four,five]
-np.save(f"Motor imagery\\Dataset(L,R,baseline)\\{ans}_{25}.npy",np.array(store))
+wwww=int(input())
+np.save(f"Motor imagery\\Improved dataset\\{ans}_{wwww}.npy",np.array(store))
 # Close tcpip connection
 con.close()
