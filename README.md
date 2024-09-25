@@ -15,5 +15,7 @@ To set up the project locally, clone this repository using:
 ```bash
 git clone https://github.com/Pianissimo-3115/EEG-project
 ```
+For training the model, you can refer to the Google Colab notebook here: [Google Colab Notebook](https://colab.research.google.com/drive/1Nh07DOZl3FClqMhxi6Y5sDCfDSrn2okI#scrollTo=6oNFxZVGCXgv) (includes eye blink detection).
+
 
 Feel free to explore the code and contribute to this project! Your feedback and contributions are welcome.
