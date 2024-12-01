@@ -200,7 +200,7 @@ while not finish:
         print(msgtype)
         finish = True
 # ans=(input("class: "))
-ans='b'
+ans='l'
 # anss=[ans for i in range(len(zero))]
 store=[zero,one,two,three,four,five]
 wwww=int(input())
